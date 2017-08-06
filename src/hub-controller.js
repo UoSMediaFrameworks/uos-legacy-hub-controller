@@ -4,10 +4,9 @@ var express = require('express');
 var http = require('http');
 var SocketIO = require('socket.io');
 
-var AuthModule = require('modules/auth-module');
-var AuthorController = require('modules/controllers/author-controller');
-var CommandAPIController = require('modules/controllers/command-api-controller');
-var SubscribeController = require('modules/controllers/subscribe-controller');
+// var AuthorController = require('modules/controllers/author-controller');
+// var CommandAPIController = require('modules/controllers/command-api-controller');
+// var SubscribeController = require('modules/controllers/subscribe-controller');
 
 /**
  * Main Application Class
@@ -24,6 +23,12 @@ class LegacyHubController {
         this.io = SocketIO(this.server);
 
         this.io.set('origins', '*:*');
+
+        this.io.on('connection', function(socket) {
+            console.log("Client connected");
+        });
+
+        this.server.listen(config.port || 3000);
     }
 }
 
