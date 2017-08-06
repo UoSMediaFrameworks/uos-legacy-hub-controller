@@ -8,12 +8,12 @@ class DataController {
         this.mediaHubConnection = mediaHubConnection;
     }
 
-    listScenes(groupId) {
-        throw new Error("Not Implemented");
+    listScenes(groupId, callback) {
+        this.mediaHubConnection.emit('loadScenes', groupId, callback);
     }
 
-    listSceneGraphs() {
-        throw new Error("Not Implemented");
+    listSceneGraphs(callback) {
+        this.mediaHubConnection.emit('listSceneGraphs', callback);
     }
 
     loadScene(sceneId) {
