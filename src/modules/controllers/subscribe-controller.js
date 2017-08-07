@@ -5,12 +5,20 @@ class SubscribeController {
         console.log("SubscribeController - constructor");
     }
 
-    unsubScene(socket, sceneId, callback) {
-        throw new Error("Not implement");
+    unsubScene(mediaHubConnection, socket, sceneId, callback) {
+        mediaHubConnection.emit("loadScene", sceneId, function(err, scene) {
+            socket.leave(sceneId);
+
+            callback(err, scene);
+        });
     }
 
-    subScene(socket, sceneId, callback) {
-        throw new Error("Not implement");
+    subScene(mediaHubConnection, socket, sceneId, callback) {
+        mediaHubConnection.emit("loadScene", sceneId, function(err, scene) {
+            socket.join(sceneId);
+
+            callback(err, scene);
+        });
     }
 
     register(socket, roomId) {
