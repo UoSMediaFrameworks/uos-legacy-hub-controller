@@ -2,7 +2,7 @@
 
 var LegacyHubController = require('./src/hub-controller');
 
-class Configuraion {
+class Configuration {
     constructor() {
         this.secret = process.env.HUB_SECRET;
         this.secret_1 = process.env.HUB_SECRET_1;
@@ -25,4 +25,4 @@ class Configuraion {
     }
 }
 
-var hubController = new LegacyHubController(new Configuraion());
+var hubController = new LegacyHubController(new Configuration());

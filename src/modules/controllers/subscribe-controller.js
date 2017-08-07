@@ -6,9 +6,11 @@ class SubscribeController {
     }
 
     unsubScene(socket, sceneId, callback) {
+        throw new Error("Not implement");
     }
 
     subScene(socket, sceneId, callback) {
+        throw new Error("Not implement");
     }
 
     register(socket, roomId) {

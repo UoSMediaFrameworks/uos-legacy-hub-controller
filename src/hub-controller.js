@@ -4,6 +4,8 @@ var express = require('express');
 var http = require('http');
 var SocketIO = require('socket.io');
 
+var MediaHubConnection = require('./modules/media-hub-connection');
+
 // var AuthorController = require('modules/controllers/author-controller');
 // var CommandAPIController = require('modules/controllers/command-api-controller');
 // var SubscribeController = require('modules/controllers/subscribe-controller');
@@ -29,6 +31,13 @@ class LegacyHubController {
         });
 
         this.server.listen(config.port || 3000);
+
+        this.mediaHubConnection = new MediaHubConnection(config);
+
+    }
+
+    init(callback) {
+        this.mediaHubConnection.tryConnect(callback);
     }
 }
 
