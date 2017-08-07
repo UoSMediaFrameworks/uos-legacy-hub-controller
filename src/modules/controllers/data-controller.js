@@ -9,23 +9,23 @@ class DataController {
     }
 
     listScenes(groupId, callback) {
-        this.mediaHubConnection.emit('loadScenes', groupId, callback);
+        this.mediaHubConnection.emit('listScenes', groupId, callback);
     }
 
     listSceneGraphs(callback) {
         this.mediaHubConnection.emit('listSceneGraphs', callback);
     }
 
-    loadScene(sceneId) {
-        throw new Error("Not Implemented");
+    loadScene(sceneId, callback) {
+        this.mediaHubConnection.emit('loadScene', sceneId, callback);
     }
 
-    loadSceneGraph(sceneGraphId) {
-        throw new Error("Not Implemented");
+    loadSceneGraph(sceneGraphId, callback) {
+        this.mediaHubConnection.emit('loadSceneGraph', sceneGraphId, callback);
     }
 
-    loadSceneByName(sceneName) {
-        throw new Error("Not Implemented");
+    loadSceneByName(sceneName, callback) {
+        this.mediaHubConnection.emit('loadSceneByName', sceneName, callback);
     }
 }
 
