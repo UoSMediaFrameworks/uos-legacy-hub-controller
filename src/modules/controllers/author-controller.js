@@ -1,28 +1,57 @@
 "use strict";
 
 class AuthorController {
-    constructor() {
+    constructor(mediaHubConnection, io) {
         console.log("AuthorController - constructor");
+
+        this.mediaHubConnection = mediaHubConnection;
+        this.io = io;
     }
 
-    // APEP TODO ensure signature is correct
-    saveScene(scene) {
-        throw new Error("Not Implemented");
+    saveScene(scene, callback) {
+
+        var self = this;
+
+        this.mediaHubConnection.emit('saveScene', scene, function(err, savedScene) {
+
+            if(err) {
+                return callback(err, null);
+            }
+
+            // APEP capture the callback directly, so we can publish the sceneUpdate to any clients connected to the controller
+
+            self.io.to(scene._id).emit('sceneUpdate', savedScene);
+
+            callback(err, savedScene);
+
+        });
     }
 
-    // APEP TODO ensure signature is correct
-    saveSceneGraph(sceneGraph) {
-        throw new Error("Not Implemented");
+    saveSceneGraph(sceneGraph, callback) {
+
+        var self = this;
+
+        this.mediaHubConnection.emit('saveSceneGraph', sceneGraph, function(err, savedSceneGraph) {
+
+            if(err) {
+                return callback(err, null);
+            }
+
+            // APEP capture the callback directly, so we can publish the sceneUpdate to any clients connected to the controller
+
+            self.io.to(savedSceneGraph._id).emit('sceneGraphUpdate', savedSceneGraph);
+
+            callback(err, savedSceneGraph);
+
+        });
     }
 
-    // APEP TODO ensure signature is correct
-    deleteScene(sceneId) {
-        throw new Error("Not Implemented");
+    deleteScene(sceneId, callback) {
+        this.mediaHubConnection.emit('deleteScene', sceneId, callback);
     }
 
-    // APEP TODO ensure signature is correct
-    deleteSceneGraph(sceneGraphId) {
-        throw new Error("Not Implemented");
+    deleteSceneGraph(sceneGraphId, callback) {
+        this.mediaHubConnection.emit('deleteSceneGraph', sceneGraphId, callback);
     }
 
 }
