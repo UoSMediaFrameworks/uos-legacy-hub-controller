@@ -13,8 +13,6 @@ var MediaHubConnection = require('./modules/media-hub-connection');
 /**
  * Main Application Class
  * Creates a self serving web socket server
- * TODO creates connection to media hub
- * TODO setups all the correct listeners
  */
 class LegacyHubController {
     constructor(config) {
@@ -22,6 +20,7 @@ class LegacyHubController {
 
         this.app = express();
         this.server = http.Server(this.app);
+        this.server = require('http-shutdown')(this.server);
         this.io = SocketIO(this.server);
 
         this.io.set('origins', '*:*');
@@ -38,6 +37,13 @@ class LegacyHubController {
 
     init(callback) {
         this.mediaHubConnection.tryConnect(callback);
+    }
+
+    shutdown(callback) {
+        this.server.shutdown(function() {
+            console.log('Everything is cleanly shutdown.');
+            callback();
+        });
     }
 }
 

@@ -20,8 +20,13 @@ describe('hub-controller tests', function() {
         var controllerClient = SocketIOClient("http://localhost:" + this.config.port);
 
         controllerClient.on('connect', function() {
+            controllerClient.disconnect();
             done();
         });
+    });
+
+    afterEach(function(done){
+       this.controller.shutdown(done);
     });
 
 });

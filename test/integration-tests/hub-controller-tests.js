@@ -10,7 +10,10 @@ describe('hub controller integration test', function() {
 
         hubController.init(function(){
             assert(hubController.mediaHubConnection.hub.connected);
-            done();
+
+            hubController.shutdown(function() {
+                done();
+            });
         });
     });
 

@@ -55,7 +55,7 @@ describe('command-api-controller', function() {
         var invalidSceneThemeHolder = {
             "scenes": "scene1, scene2",
             "themes": []
-        }
+        };
 
         var mockIO = {};
         var mockMediaHubConnection = {};
@@ -104,6 +104,63 @@ describe('command-api-controller', function() {
         var commandController = new CommandAPIController(mockMediaHubConnection, mockIO);
 
         commandController.playSceneAndThemes(roomId, validSceneThemeHolder, function(err) {
+            assert(didUseMediaHubConnection);
+            assert(didPublishToSocketRoom);
+            assert(!err);
+
+            done();
+        });
+    });
+
+    it('showScenes fails given an incorrect sceneList with optional callback', function(done) {
+        var roomId = "testroom";
+
+        var invalidSceneList = "scene1, scene2";
+
+        var mockIO = {};
+        var mockMediaHubConnection = {};
+
+        var commandController = new CommandAPIController(mockMediaHubConnection, mockIO);
+
+        commandController.showScenes(roomId, invalidSceneList, function(err) {
+            assert(err);
+            done();
+        });
+    });
+
+    it('showScenes publishes generic command when valid to media hub via connection', function(done) {
+        var roomId = "testroom";
+
+        var validSceneList = ["scene1", "scene2"];
+
+        var didUseMediaHubConnection = false;
+        var didPublishToSocketRoom = false;
+
+        var mockIO = {
+            to: function(rId) {
+                assert(rId === roomId);
+                return {
+                    emit: function(messageType, data) {
+                        assert(messageType === "command");
+                        assert(_.isEqual(data, {name: "showScenes", value: validSceneList}));
+                        didPublishToSocketRoom = true;
+                    }
+                }
+            }
+        };
+        var mockMediaHubConnection = {
+            emit: function (messageType, rId, cName, cValue, callback) {
+                assert(messageType === "sendCommand");
+                assert(rId === roomId);
+                assert(cName === "showScenes");
+                assert(_.isEqual(cValue, validSceneList));
+                didUseMediaHubConnection = true;
+            }
+        };
+
+        var commandController = new CommandAPIController(mockMediaHubConnection, mockIO);
+
+        commandController.showScenes(roomId, validSceneList, function(err) {
             assert(didUseMediaHubConnection);
             assert(didPublishToSocketRoom);
             assert(!err);

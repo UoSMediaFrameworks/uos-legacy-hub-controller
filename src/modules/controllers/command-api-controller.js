@@ -3,12 +3,12 @@
 var _ = require('lodash');
 
 let PLAY_SCENE_THEME_COMMAND_NAME = "playSceneAndThemes";
+let SHOW_SCENES_COMMAND_NAME = "showScenes";
 
 class CommandAPIController {
 
     constructor(mediaHubConnection, io) {
         console.log("CommandAPIController - constructor");
-
         this.mediaHubConnection = mediaHubConnection;
         this.io = io;
     }
@@ -22,7 +22,7 @@ class CommandAPIController {
     }
 
     playSceneAndThemes(roomId, sceneAndThemesHolder, callback) {
-        if(!this._isValidateSceneAndThemeHolder(sceneAndThemesHolder)) {
+        if(!this._isValidSceneAndThemeHolder(sceneAndThemesHolder)) {
             if(callback) {
                 return callback(new Error("Scene and Themes holder invalid, check documentation"));
             }
@@ -34,16 +34,40 @@ class CommandAPIController {
         // APEP publish for any clients connected directly to controller
         this.io.to(roomId).emit('command', {name: PLAY_SCENE_THEME_COMMAND_NAME, value: sceneAndThemesHolder});
 
-        callback();
+        if(callback) {
+            callback();
+        }
     }
 
-    _isValidateSceneAndThemeHolder(sceneAndThemesHolder) {
+    showScenes(roomId, sceneList, callback) {
+        if(!this._isValidSceneList(sceneList)) {
+            if(callback) {
+                return callback(new Error("SceneList invalid, check documentation"));
+            }
+        }
+
+        // APEP ensure we publish this for any legacy clients still connecting directly to the media hub
+        this.mediaHubConnection.emit('sendCommand', roomId, SHOW_SCENES_COMMAND_NAME, sceneList);
+
+        // APEP publish for any clients connected directly to controller
+        this.io.to(roomId).emit('command', {name: SHOW_SCENES_COMMAND_NAME, value: sceneList});
+
+        if(callback) {
+            callback();
+        }
+    }
+
+    _isValidSceneAndThemeHolder(sceneAndThemesHolder) {
         var hasCorrectPropertiesKeys = sceneAndThemesHolder.hasOwnProperty("scenes") && sceneAndThemesHolder.hasOwnProperty("themes");
 
         if (!hasCorrectPropertiesKeys)
             return false;
 
         return _.isArray(sceneAndThemesHolder.scenes) && _.isArray(sceneAndThemesHolder.themes);
+    }
+
+    _isValidSceneList(sceneList) {
+        return _.isArray(sceneList);
     }
 }
 
