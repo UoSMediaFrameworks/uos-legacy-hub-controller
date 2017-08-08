@@ -24,7 +24,7 @@ class CommandAPIController {
     playSceneAndThemes(roomId, sceneAndThemesHolder, callback) {
         if(!this._isValidateSceneAndThemeHolder(sceneAndThemesHolder)) {
             if(callback) {
-                callback(new Error("Scene and Themes holder invalid, check documentation"));
+                return callback(new Error("Scene and Themes holder invalid, check documentation"));
             }
         }
 
