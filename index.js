@@ -1,6 +1,6 @@
 "use strict"
 
-var LegacyHubController = require('./src/hub-controller');
+var LegacyMediaHubController = require('./src/legacy-media-hub-controller');
 
 class Configuration {
     constructor() {
@@ -22,7 +22,10 @@ class Configuration {
         this.secret_113 = process.env.HUB_SECRET_113;
         this.mongo = process.env.HUB_MONGO;
         this.port = process.env.PORT;
+        this.hubUrl = process.env.HUB_URL;
+        this.hubPassword = process.env.HUB_PASSWORD;
     }
 }
 
-var hubController = new LegacyHubController(new Configuration());
+var hubController = new LegacyMediaHubController(new Configuration());
+hubController.init();
