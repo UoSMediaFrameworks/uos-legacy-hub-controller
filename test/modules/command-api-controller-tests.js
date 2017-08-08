@@ -3,12 +3,12 @@ var CommandAPIController = require('../../src/modules/controllers/command-api-co
 var assert = require('assert');
 var _ = require('lodash');
 
-describe('data-controller', function() {
+describe('command-api-controller', function() {
 
     beforeEach(function () {
     });
 
-    it('listScenes uses the mediaHubConnection to request data from that socket', function (done) {
+    it('sendCommand uses the mediaHubConnection to request data from that socket', function (done) {
 
         var roomId = "testroom";
         var commandName = "playSceneAndThemes";
@@ -47,6 +47,69 @@ describe('data-controller', function() {
 
         commandController.sendCommand(roomId, commandName, commandValue);
 
+    });
+
+    it('playSceneAndThemes fails given an incorrect sceneAndThemeHolder with optional callback', function(done) {
+        var roomId = "testroom";
+
+        var invalidSceneThemeHolder = {
+            "scenes": "scene1, scene2",
+            "themes": []
+        }
+
+        var mockIO = {};
+        var mockMediaHubConnection = {};
+
+        var commandController = new CommandAPIController(mockMediaHubConnection, mockIO);
+
+        commandController.playSceneAndThemes(roomId, invalidSceneThemeHolder, function(err) {
+            assert(err);
+            done();
+        });
+    });
+
+    it('playSceneAndThemes publishes generic command when valid to media hub via connection', function(done) {
+        var roomId = "testroom";
+
+        var validSceneThemeHolder = {
+            "scenes": ["scene1", "scene2"],
+            "themes": []
+        };
+
+        var didUseMediaHubConnection = false;
+        var didPublishToSocketRoom = false;
+
+        var mockIO = {
+            to: function(rId) {
+                assert(rId === roomId);
+                return {
+                    emit: function(messageType, data) {
+                        assert(messageType === "command");
+                        assert(_.isEqual(data, {name: "playSceneAndThemes", value: validSceneThemeHolder}));
+                        didPublishToSocketRoom = true;
+                    }
+                }
+            }
+        };
+        var mockMediaHubConnection = {
+            emit: function (messageType, rId, cName, cValue, callback) {
+                assert(messageType === "sendCommand");
+                assert(rId === roomId);
+                assert(cName === "playSceneAndThemes");
+                assert(_.isEqual(cValue, validSceneThemeHolder));
+                didUseMediaHubConnection = true;
+            }
+        };
+
+        var commandController = new CommandAPIController(mockMediaHubConnection, mockIO);
+
+        commandController.playSceneAndThemes(roomId, validSceneThemeHolder, function(err) {
+            assert(didUseMediaHubConnection);
+            assert(didPublishToSocketRoom);
+            assert(!err);
+
+            done();
+        });
     });
 
 });

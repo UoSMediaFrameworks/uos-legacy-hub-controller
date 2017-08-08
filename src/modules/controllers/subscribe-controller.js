@@ -5,6 +5,7 @@ class SubscribeController {
         console.log("SubscribeController - constructor");
     }
 
+    // APEP TODO should use data controller module rather than the media hub connection directly
     unsubScene(mediaHubConnection, socket, sceneId, callback) {
         mediaHubConnection.emit("loadScene", sceneId, function(err, scene) {
             socket.leave(sceneId);
@@ -13,6 +14,7 @@ class SubscribeController {
         });
     }
 
+    // APEP TODO should use data controller module rather than the media hub connection directly
     subScene(mediaHubConnection, socket, sceneId, callback) {
         mediaHubConnection.emit("loadScene", sceneId, function(err, scene) {
             socket.join(sceneId);
