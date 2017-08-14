@@ -11,12 +11,13 @@ var MediaHubConnection = require('./modules/media-hub-connection');
  * Creates a self serving web socket server
  */
 class LegacyHubController {
-    constructor(config) {
+    constructor(config, optMediaHubConnection) {
         console.log("LegacyHubController - constructor");
 
         this.app = express();
         this.server = http.Server(this.app);
         this.server = require('http-shutdown')(this.server);
+
         this.io = SocketIO(this.server);
 
         this.io.set('origins', '*:*');
@@ -25,7 +26,7 @@ class LegacyHubController {
 
         this.server.listen(config.port || 3000);
 
-        this.mediaHubConnection = new MediaHubConnection(config);
+        this.mediaHubConnection = optMediaHubConnection ? optMediaHubConnection : new MediaHubConnection(config);
 
     }
 
@@ -35,6 +36,24 @@ class LegacyHubController {
 
     clientSocketConnected(socket) {
         console.log("LegacyHubController - Client connected");
+
+        var disconnectTimer = setTimeout(function() {
+            socket.disconnect();
+        }, 10000);
+
+        var self = this;
+
+        socket.on('auth', function(creds, callback) {
+            self.mediaHubConnection.hub.emit("authProvider", creds, function(err, token, roomId, groupId) {
+                if(err) {
+                    callback(err, token, roomId, groupId);
+                    socket.disconnect();
+                } else {
+                    clearTimeout(disconnectTimer);
+                    callback(err, token, roomId, groupId);
+                }
+            });
+        });
     }
 
     shutdown(callback) {
