@@ -1,6 +1,5 @@
-/**
- * Created by aaa48574 on 16/08/2017.
- */
+'use strict';
+
 class Configuration {
     constructor() {
         this.port = process.env.PORT;
