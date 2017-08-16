@@ -13,26 +13,33 @@ class LegacyMediaHubController extends HubController {
     }
 
     init(callback) {
-        this.mediaHubConnection.tryConnect(callback);
+        var self = this;
+        this.mediaHubConnection.tryConnect(function() {
+            self.authorController = new AuthorController(self.mediaHubConnection.hub, self.io);
+            self.dataController = new DataController(self.mediaHubConnection.hub);
 
-        this.authorController = new AuthorController(this.mediaHubConnection.hub, this.io);
-        this.dataController = new DataController(this.mediaHubConnection.hub, this.io);
+            if(callback)
+                callback();
+        });
     }
 
-    clientSocketConnected(socket) {
+    clientSocketSuccessfulAuth(socket) {
+
+        console.log("LegacyMediaHubController - clientSocketSuccessfulAuth");
+
         var self = this;
 
         socket.on("saveScene", this.authorController.saveScene);
 
         socket.on("listScenes", function(callback) {
+            // APEP TODO resolve this, the client should not send the group ID.
+            // APEP the group ID assigned server side should be used
             self.dataController.listScenes(0, callback);
         });
-        socket.on("listSceneGraphs", this.dataController.listSceneGraphs);
-        socket.on("loadScene", function(sceneId, callback) {
-            self.dataController.loadScene(sceneId, callback);
-        });
-        socket.on("loadSceneGraph", this.dataController.loadSceneGraph);
-        socket.on("loadSceneByName", this.dataController.loadSceneByName);
+        socket.on("listSceneGraphs", this.dataController.listSceneGraphs.bind(self.dataController));
+        socket.on("loadScene",       this.dataController.loadScene.bind(self.dataController));
+        socket.on("loadSceneGraph",  this.dataController.loadSceneGraph.bind(self.dataController));
+        socket.on("loadSceneByName", this.dataController.loadSceneByName.bind(self.dataController));
     }
 }
 

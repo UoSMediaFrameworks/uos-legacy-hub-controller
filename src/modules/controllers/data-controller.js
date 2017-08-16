@@ -5,6 +5,8 @@
  */
 class DataController {
     constructor(mediaHubConnection) {
+        console.log("AuthorController - constructor");
+
         this.mediaHubConnection = mediaHubConnection;
     }
 

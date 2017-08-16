@@ -34,6 +34,10 @@ class LegacyHubController {
         this.mediaHubConnection.tryConnect(callback);
     }
 
+    clientSocketSuccessfulAuth(socket) {
+        console.log("LegacyHubController - clientSocketSuccessfulAuth");
+    }
+
     clientSocketConnected(socket) {
         console.log("LegacyHubController - Client connected");
 
@@ -44,12 +48,16 @@ class LegacyHubController {
         var self = this;
 
         socket.on('auth', function(creds, callback) {
+
+            console.log("auth attempt");
+
             self.mediaHubConnection.hub.emit("authProvider", creds, function(err, token, roomId, groupId) {
                 if(err) {
                     callback(err, token, roomId, groupId);
                     socket.disconnect();
                 } else {
                     clearTimeout(disconnectTimer);
+                    self.clientSocketSuccessfulAuth(socket);
                     callback(err, token, roomId, groupId);
                 }
             });

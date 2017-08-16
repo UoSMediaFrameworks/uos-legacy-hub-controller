@@ -57,6 +57,7 @@ describe('hub-controller tests', function() {
                 assert(didDisconnect);
                 assert(socketConnectedTime !== 0 && socketDisconnectedTime !== 0);
                 assert(socketDisconnectedTime - socketConnectedTime === 10);
+                controllerClient.disconnect();
                 done();
             }, 10050);
         }).timeout(11000);
