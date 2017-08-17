@@ -38,9 +38,8 @@ class LegacyMediaHubController extends HubController {
 
         // APEP setup data API
         socket.on("listScenes", function(callback) {
-            // APEP TODO resolve this, the client should not send the group ID.
-            // APEP the group ID assigned server side should be used
-            self.dataController.listScenes(0, callback);
+            // APEP we must use the assigned groupId
+            self.dataController.listScenes(socket.groupId, callback);
         });
         socket.on("listSceneGraphs", this.dataController.listSceneGraphs.bind(self.dataController));
         socket.on("loadScene",       this.dataController.loadScene.bind(self.dataController));

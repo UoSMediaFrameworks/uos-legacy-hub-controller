@@ -57,6 +57,8 @@ class LegacyHubController {
                     socket.disconnect();
                 } else {
                     clearTimeout(disconnectTimer);
+                    // APEP assign a groupId variable to the socket for later use
+                    socket.groupId = groupId;
                     self.clientSocketSuccessfulAuth(socket);
                     callback(err, token, roomId, groupId);
                 }
