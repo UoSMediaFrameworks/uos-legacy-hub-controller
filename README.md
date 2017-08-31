@@ -7,7 +7,7 @@ Follow precedence of MF, .sh environment files can be used to export environment
 
 Command to start the application
 
-```./dev-env.sh node index.js```
+```./dev-env.sh node app.js```
 
 ## Testing and running
 
