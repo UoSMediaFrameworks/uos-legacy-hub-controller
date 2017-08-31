@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/UoSMediaFrameworks/uos-legacy-hub-controller.git"
   },
+  "engines":{"node": "4.8.x"},
   "author": "",
   "license": "MIT",
   "bugs": {
