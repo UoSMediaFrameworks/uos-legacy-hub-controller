@@ -15,7 +15,7 @@ describe('hub-controller tests', function() {
 
     describe('base tests', function() {
         beforeEach(function() {
-            // APEP following the Config class definition in index.js we are matching that
+            // APEP following the Config class definition in app.js we are matching that
             // APEP secret is to be otherwise known as the admin pass key
             this.config = { port: 3000, secret: VALID_ADMIN_TEST_PASSWORD };
             this.controller = new HubController(this.config);
@@ -83,7 +83,7 @@ describe('hub-controller tests', function() {
                 }
             };
 
-            // APEP following the Config class definition in index.js we are matching that
+            // APEP following the Config class definition in app.js we are matching that
             // APEP secret is to be otherwise known as the admin pass key
             var config = { port: 3000, secret: VALID_ADMIN_TEST_PASSWORD };
             var controller = new HubController(config, mockMediaHubConnection);
@@ -123,7 +123,7 @@ describe('hub-controller tests', function() {
                 }
             };
 
-            // APEP following the Config class definition in index.js we are matching that
+            // APEP following the Config class definition in app.js we are matching that
             // APEP secret is to be otherwise known as the admin pass key
             var config = { port: 3000, secret: VALID_ADMIN_TEST_PASSWORD };
             var controller = new HubController(config, mockMediaHubConnection);
@@ -158,7 +158,7 @@ describe('hub-controller tests', function() {
                 }
             };
 
-            // APEP following the Config class definition in index.js we are matching that
+            // APEP following the Config class definition in app.js we are matching that
             // APEP secret is to be otherwise known as the admin pass key
             var config = { port: 3000, secret: VALID_ADMIN_TEST_PASSWORD };
             var controller = new HubController(config, mockMediaHubConnection);
