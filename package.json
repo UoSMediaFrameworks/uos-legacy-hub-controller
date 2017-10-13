@@ -11,7 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/UoSMediaFrameworks/uos-legacy-hub-controller.git"
   },
-  "engines":{"node": "4.8.x"},
+  "engines": {
+    "node": "4.8.x"
+  },
   "author": "",
   "license": "MIT",
   "bugs": {
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/UoSMediaFrameworks/uos-legacy-hub-controller#readme",
   "dependencies": {
+    "amqplib": "^0.5.1",
     "async": "^0.9.0",
     "bcrypt-nodejs": "0.0.3",
     "cors": "^2.5.3",
