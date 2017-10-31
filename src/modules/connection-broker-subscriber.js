@@ -4,8 +4,8 @@ var amqp = require('amqplib/callback_api');
 
 class ConnectionBrokerSubscriber {
 
-    constructor(topics, connectionBrokerAMQPAddress) {
-        this.topics = topics;
+    constructor(topic, connectionBrokerAMQPAddress) {
+        this.topic = topic;
         this.connectionBrokerAMQPAddress = connectionBrokerAMQPAddress;
     }
 
@@ -19,33 +19,34 @@ class ConnectionBrokerSubscriber {
 
             // APEP subscribing for updates from the media hub
             conn.createChannel(function(err, ch) {
-                ch.assertQueue(self.topics, {durable: false});
+                ch.assertQueue(self.topic, {durable: false});
 
-                console.log(" [*] Waiting for messages in %s.", self.topics);
+                // console.log(" [*] Waiting for messages in %s.", self.topic);
 
-                ch.consume(self.topics, self.onMessageReceived.bind(self), {noAck: true});
+                ch.consume(self.topic, self.onMessageReceived.bind(self), {noAck: true});
 
+                self.ch = ch;
+
+                callback();
             });
         });
     }
 
     onMessageReceived(msg) {
-        console.log("Override me");
-
-        console.log(" [x] Received %s", msg.content.toString());
+        // console.log(" [x] Received %s", msg.content.toString());
 
         // APEP TODO we can then publish to our clients via there choice of client protocol.
         // APEP for now this will mostly just be WS.
-
-        var command = msg.content.toJSON();
-
-        console.log(" [x.2] JSON %s", command);
+        // var command = msg.content.toJSON();
+        // console.log(" [x.2] JSON %s", command);
 
         this.onMessage(msg);
     }
 
     onMessage(msg) {
-
+        console.log("onMessage - Override me");
     }
 
 }
+
+module.exports = ConnectionBrokerSubscriber;
