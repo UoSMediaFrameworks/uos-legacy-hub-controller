@@ -51,7 +51,7 @@ class LegacyHubController {
 
             console.log("auth attempt");
 
-            self.mediaHubConnection.hub.emit("authProvider", creds, function(err, token, roomId, groupId) {
+            self.mediaHubConnection.attemptClientAuth(creds, function(err, token, roomId, groupId) {
                 if(err) {
                     callback(err, token, roomId, groupId);
                     socket.disconnect();

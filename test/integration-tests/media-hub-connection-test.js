@@ -5,27 +5,65 @@ var config = require('./config/testing-config');
 var badConfig = require('./config/bad-testing-config');
 var assert = require('assert');
 
-describe('media hub connection integration test', function() {
+describe('MediaHubConnection', function() {
 
-    it ('the connection tries to connect and auth using the config provided', function(done) {
-        var mediaHubConnection = new MediaHubConnection(config);
+    describe('connection testing', function(){
+        it ('the connection tries to connect and auth using the config provided', function(done) {
+            var mediaHubConnection = new MediaHubConnection(config);
 
-        mediaHubConnection.tryConnect(function() {
+            mediaHubConnection.tryConnect(function() {
 
-            assert(mediaHubConnection.hub.connected);
+                assert(mediaHubConnection.hub.connected);
 
-            done();
+                done();
+            });
+        });
+
+        it ('the connection is disconnected with bad config provided', function(done) {
+            var mediaHubConnection = new MediaHubConnection(badConfig);
+
+            mediaHubConnection.tryConnect(function() {
+
+                assert(!mediaHubConnection.hub.connected);
+
+                done();
+            });
         });
     });
 
-    it ('the connection is disconnectd with bad config provided', function(done) {
-        var mediaHubConnection = new MediaHubConnection(badConfig);
+    describe('authProvider', function() {
 
-        mediaHubConnection.tryConnect(function() {
+        before(function(done) {
+            this.mediaHubConnection = new MediaHubConnection(config);
 
-            assert(!mediaHubConnection.hub.connected);
+            this.mediaHubConnection.tryConnect(function() {
+                assert(this.mediaHubConnection.hub.connected);
+                done();
+            }.bind(this));
+        });
 
-            done();
+        it('"attemptClientAuth", {password: <valid>}', function(done){
+
+            const goodCreds = {"password": "kittens"};
+
+            this.mediaHubConnection.attemptClientAuth(goodCreds, function(err, token) {
+                assert(!err);
+                assert(token);
+                done();
+            });
+        });
+
+        it('"attemptClientAuth", {password: <invalid valid>}', function(done) {
+
+            this.timeout(5000);
+
+            const badCreds = {"password": "fail"};
+
+            this.mediaHubConnection.attemptClientAuth(badCreds, function(err, token, room, group) {
+                assert(err === "Invalid Password");
+                assert(token === null);
+                done();
+            });
         });
     });
 });
