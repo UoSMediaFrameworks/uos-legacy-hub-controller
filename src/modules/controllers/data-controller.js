@@ -11,7 +11,7 @@ class DataController {
     }
 
     listScenes(groupId, callback) {
-        this.mediaHubConnection.emit('listScenes', groupId, callback);
+        this.mediaHubConnection.emit('listScenesForGroup', groupId, callback);
     }
 
     listSceneGraphs(callback) {
