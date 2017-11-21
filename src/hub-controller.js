@@ -51,7 +51,7 @@ class LegacyHubController {
 
             console.log("auth attempt");
 
-            self.mediaHubConnection.hub.emit("authProvider", creds, function(err, token, roomId, groupId) {
+            self.mediaHubConnection.attemptClientAuth(creds, function(err, token, roomId, groupId) {
                 if(err) {
                     callback(err, token, roomId, groupId);
                     socket.disconnect();
@@ -59,6 +59,7 @@ class LegacyHubController {
                     clearTimeout(disconnectTimer);
                     // APEP assign a groupId variable to the socket for later use
                     socket.groupId = groupId;
+                    socket.token = token;
                     self.clientSocketSuccessfulAuth(socket);
                     callback(err, token, roomId, groupId);
                 }

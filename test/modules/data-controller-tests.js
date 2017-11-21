@@ -16,7 +16,7 @@ describe('data-controller', function(){
 
         var mockMediaHubConnection = {
             emit: function(messageType, actualGroupID, callback) {
-                assert(messageType === "listScenes");
+                assert(messageType === "listScenesForGroup");
                 assert(actualGroupID === expectedGroupID);
                 didUseMediaHubConnection = true;
                 callback(null, null)

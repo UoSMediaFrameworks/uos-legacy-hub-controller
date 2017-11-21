@@ -47,6 +47,10 @@ class MediaHubConnection {
             this.hubConnectedCallback()
         }
     }
+
+    attemptClientAuth(creds, callback) {
+        this.hub.emit('authProvider', creds, callback);
+    }
 }
 
 module.exports = MediaHubConnection;
