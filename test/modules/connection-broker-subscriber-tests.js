@@ -1,14 +1,15 @@
 'use strict';
 
-var ConnectionBrokerSubscriber = require('../../src/modules/connection-broker-subscriber');
-var assert = require('assert');
-var amqp = require('amqplib/callback_api');
+const ConnectionBrokerSubscriber = require('../../src/modules/connection-broker-subscriber');
+const ConnectionBrokerConstants = require('../../src/modules/connection-broker-constants');
+const assert = require('assert');
+const amqp = require('amqplib/callback_api');
 
 describe('connection-broker-subscriber', function() {
 
     describe('connect', function() {
         before(function(done){
-            this.topic = 'ws';
+            this.topic = ConnectionBrokerConstants.LEGACY_WS_TOPIC;
             this.address = 'amqp://localhost';
             this.connectionBroker = new ConnectionBrokerSubscriber(this.topic, this.address);
             done();
@@ -25,7 +26,7 @@ describe('connection-broker-subscriber', function() {
 
     describe('onMessage receives messages', function() {
         before(function(done){
-            this.topic = 'ws';
+            this.topic = ConnectionBrokerConstants.LEGACY_WS_TOPIC;
             this.address = 'amqp://localhost';
             done();
         });
@@ -58,10 +59,11 @@ describe('connection-broker-subscriber', function() {
                     // APEP if we fail to connect, throw and fail the test
                     if(err) throw err;
 
-                    // APEP publish on topic for test
-                    conn.createChannel(function(err, ch) {
-                        ch.assertQueue(self.topic, {durable: false});
-                        ch.sendToQueue(self.topic, new Buffer(expectedMessage));
+                    conn.createChannel(function (err, ch) {
+                        ch.assertExchange(ConnectionBrokerConstants.AMQP_EXCHANGE, 'topic', {durable: false});
+                        self.amqpChannel = ch;
+                        self.amqpChannel.publish(ConnectionBrokerConstants.AMQP_EXCHANGE, self.topic, new Buffer(expectedMessage));
+                        done();
                     });
                 });
             });

@@ -1,7 +1,7 @@
 "use strict";
 
 var amqp = require('amqplib/callback_api');
-
+var ConnectionBrokerConstants = require('./connection-broker-constants');
 class ConnectionBrokerSubscriber {
 
     constructor(topic, connectionBrokerAMQPAddress) {
@@ -19,15 +19,19 @@ class ConnectionBrokerSubscriber {
 
             // APEP subscribing for updates from the media hub
             conn.createChannel(function(err, ch) {
-                ch.assertQueue(self.topic, {durable: false});
 
-                // console.log(" [*] Waiting for messages in %s.", self.topic);
+                ch.assertExchange(ConnectionBrokerConstants.AMQP_EXCHANGE, 'topic', {durable: false});
 
-                ch.consume(self.topic, self.onMessageReceived.bind(self), {noAck: true});
+                ch.assertQueue('', {exclusive: true}, function (err, q) {
 
-                self.ch = ch;
+                    ch.bindQueue(q.queue, ConnectionBrokerConstants.AMQP_EXCHANGE, self.topic);
 
-                callback();
+                    ch.consume(q.queue, self.onMessageReceived.bind(self), {noAck: true});
+
+                    self.ch = ch;
+
+                    callback();
+                });
             });
         });
     }

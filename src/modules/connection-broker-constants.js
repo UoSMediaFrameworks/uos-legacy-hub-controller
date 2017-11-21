@@ -1,0 +1,21 @@
+"use strict";
+
+const AMQP_EXCHANGE = 'hub_output';
+const PROJECT_WS_TOPIC = 'project.ws';
+const PROJECT_OSC_TOPIC = 'project.osc';
+const MF_API_WS_TOPIC = 'mf-api.ws';
+const LEGACY_WS_TOPIC = 'legacy.ws';
+const WS_PROTOCOL_WILDCARD_TOPIC = '*.ws';
+const AMQP_TOPICS = [this.PROJECT_WS_TOPIC, this.PROJECT_OSC_TOPIC, this.MF_API_WS_TOPIC, this.LEGACY_WS_TOPIC];
+
+module.exports = {
+    AMQP_EXCHANGE: AMQP_EXCHANGE,
+    AMQP_TOPICS: AMQP_TOPICS,
+
+    /* Topics for MQ*/
+    PROJECT_WS_TOPIC: PROJECT_WS_TOPIC,
+    PROJECT_OSC_TOPIC: PROJECT_OSC_TOPIC,
+    MF_API_WS_TOPIC: MF_API_WS_TOPIC,
+    LEGACY_WS_TOPIC: LEGACY_WS_TOPIC,
+    WS_PROTOCOL_WILDCARD_TOPIC: WS_PROTOCOL_WILDCARD_TOPIC
+};
