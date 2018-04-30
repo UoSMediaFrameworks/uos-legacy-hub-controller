@@ -11,7 +11,10 @@ class MediaHubConnection {
     constructor(config) {
         this.hubUrl = config.hubUrl;
         this.hubPassword = config.hubPassword;
-        this.hubAuthCreds = { "password": this.hubPassword };
+        this.hubAuthCreds = {
+            "username": this.hubPassword,
+            "password": this.hubPassword
+        };
 
         this.hub = null;
         this.hubConnectedCallback = null;
