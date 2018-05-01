@@ -62,7 +62,7 @@ describe('hub-controller tests', function() {
             }, 10050);
         }).timeout(11000);
 
-        afterEach(function(done){
+        afterEach(function(done) {
             //APEP: ensure we cleanly shutdown the server - this ensures the port is released for any other tests
             this.controller.shutdown(done);
         });
@@ -80,6 +80,10 @@ describe('hub-controller tests', function() {
                         didUseMediaHubConnection = true;
                         callback(true);
                     }
+                },
+                attemptClientAuth: function(creds, callback) {
+                    didUseMediaHubConnection = true;
+                    callback(true);
                 }
             };
 
@@ -120,6 +124,10 @@ describe('hub-controller tests', function() {
                         didUseMediaHubConnection = true;
                         callback(null, "token", "roomId", "_groupID");
                     }
+                },
+                attemptClientAuth: function(creds, callback) {
+                    didUseMediaHubConnection = true;
+                    callback(null, "token", "roomId", "_groupID");
                 }
             };
 
@@ -155,6 +163,9 @@ describe('hub-controller tests', function() {
                         assert(messageType === "authProvider");
                         callback(null, "token", "roomId", "_groupID");
                     }
+                },
+                attemptClientAuth: function(creds, callback) {
+                    callback(null, "token", "roomId", "_groupID");
                 }
             };
 

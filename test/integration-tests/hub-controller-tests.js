@@ -43,7 +43,8 @@ describe('hub controller integration test', function() {
         var hubController = new TestHubController(config, null, function(socket) {
             assert(socket.token);
             assert(socket.groupId === '0');
-            done();
+
+            hubController.shutdown(done)
         });
 
         hubController.init(function() {
