@@ -11,8 +11,9 @@ class MediaHubConnection {
     constructor(config) {
         this.hubUrl = config.hubUrl;
         this.hubPassword = config.hubPassword;
+        this.hubUsername = config.hubUsername;
         this.hubAuthCreds = {
-            "username": this.hubPassword,
+            "username": this.hubUsername,
             "password": this.hubPassword
         };
 
@@ -23,8 +24,7 @@ class MediaHubConnection {
     tryConnect(callback) {
         this.hubConnectedCallback = callback;
 
-        this.hub = SocketIOClient(this.hubUrl);
-
+        this.hub = SocketIOClient(this.hubUrl)
         this.hub.on('connect', this.hubConnection.bind(this));
     }
 

@@ -11,8 +11,8 @@ describe('MediaHubConnection', function() {
         it ('the connection tries to connect and auth using the config provided', function(done) {
             var mediaHubConnection = new MediaHubConnection(config);
 
+            this.timeout(7000)
             mediaHubConnection.tryConnect(function() {
-
                 assert(mediaHubConnection.hub.connected);
 
                 done();
@@ -42,7 +42,7 @@ describe('MediaHubConnection', function() {
             }.bind(this));
         });
 
-        it('"attemptClientAuth", {password: <valid>}', function(done){
+        it('"attemptClientAuth", {password: <valid password>}', function(done){
 
             const goodCreds = {"password": "kittens"};
 
@@ -53,7 +53,53 @@ describe('MediaHubConnection', function() {
             });
         });
 
-        it('"attemptClientAuth", {password: <invalid valid>}', function(done) {
+        it('"attemptClientAuth", {password: <invalid password>}', function(done) {
+
+            this.timeout(5000);
+
+            const badCreds = {"password": "fail"};
+
+            this.mediaHubConnection.attemptClientAuth(badCreds, function(err, token, room, group) {
+                assert(err === "Invalid Password");
+                assert(token === null);
+                done();
+            });
+        });
+        it('"attemptClientAuth", {username:<invalid username> password: <invalid password>}', function(done){
+
+            const goodCreds = {"password": "kittens"};
+
+            this.mediaHubConnection.attemptClientAuth(goodCreds, function(err, token) {
+                assert(!err);
+                assert(token);
+                done();
+            });
+        });
+    //---
+        it('"attemptClientAuth", {username:<valid username> password: <invalid password>}', function(done) {
+
+            this.timeout(5000);
+
+            const badCreds = {"password": "fail"};
+
+            this.mediaHubConnection.attemptClientAuth(badCreds, function(err, token, room, group) {
+                assert(err === "Invalid Password");
+                assert(token === null);
+                done();
+            });
+        });
+        it('"attemptClientAuth", {username:<invalid username> password: <valid password>}', function(done){
+
+            const goodCreds = {"password": "kittens"};
+
+            this.mediaHubConnection.attemptClientAuth(goodCreds, function(err, token) {
+                assert(!err);
+                assert(token);
+                done();
+            });
+        });
+
+        it('"attemptClientAuth", {username:<valid username> password: <valid password>}', function(done) {
 
             this.timeout(5000);
 
