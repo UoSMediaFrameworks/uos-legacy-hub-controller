@@ -48,3 +48,4 @@ test/integration-tests/config/testing-config.js
 /dev-env.sh
 
 node_modules/
+.idea/
