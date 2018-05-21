@@ -1,4 +1,5 @@
-var CommandAPIController = require('../../src/modules/controllers/command-api-controller');
+var CommandAPIController = require('../../src/modules/controllers/command-api-controller'),
+    CommandKeys = CommandAPIController.getCommandKeys();
 
 var assert = require('assert');
 var _ = require('lodash');
@@ -11,7 +12,7 @@ describe('command-api-controller', function() {
     it('sendCommand uses the mediaHubConnection to request data from that socket', function (done) {
 
         var roomId = "testroom";
-        var commandName = "playSceneAndThemes";
+        var commandName = CommandKeys.PLAY_SCENE_THEME_COMMAND_NAME;
         var commandValue = {
             scenes: ["scene1"],
             themes: []
@@ -24,7 +25,7 @@ describe('command-api-controller', function() {
                 assert(rId === roomId);
                 return {
                     emit: function(messageType, data) {
-                        assert(messageType === "command");
+                        assert(messageType === CommandKeys.DIRECT_CLIENTS.COMMAND);
                         assert(_.isEqual(data, {name: commandName, value: commandValue}));
                         assert(didUseMediaHubConnection);
                         done();
@@ -35,7 +36,7 @@ describe('command-api-controller', function() {
 
         var mockMediaHubConnection = {
             emit: function (messageType, rId, cName, cValue, callback) {
-                assert(messageType === "sendCommand");
+                assert(messageType === CommandKeys.HUB.SEND_COMMAND);
                 assert(rId === roomId);
                 assert(cName === commandName);
                 assert(_.isEqual(cValue, commandValue));
@@ -84,8 +85,8 @@ describe('command-api-controller', function() {
                 assert(rId === roomId);
                 return {
                     emit: function(messageType, data) {
-                        assert(messageType === "command");
-                        assert(_.isEqual(data, {name: "playSceneAndThemes", value: validSceneThemeHolder}));
+                        assert(messageType === CommandKeys.DIRECT_CLIENTS.COMMAND);
+                        assert(_.isEqual(data, {name: CommandKeys.PLAY_SCENE_THEME_COMMAND_NAME, value: validSceneThemeHolder}));
                         didPublishToSocketRoom = true;
                     }
                 }
@@ -93,9 +94,9 @@ describe('command-api-controller', function() {
         };
         var mockMediaHubConnection = {
             emit: function (messageType, rId, cName, cValue, callback) {
-                assert(messageType === "sendCommand");
+                assert(messageType === CommandKeys.HUB.SEND_COMMAND);
                 assert(rId === roomId);
-                assert(cName === "playSceneAndThemes");
+                assert(cName === CommandKeys.PLAY_SCENE_THEME_COMMAND_NAME);
                 assert(_.isEqual(cValue, validSceneThemeHolder));
                 didUseMediaHubConnection = true;
             }
@@ -141,8 +142,8 @@ describe('command-api-controller', function() {
                 assert(rId === roomId);
                 return {
                     emit: function(messageType, data) {
-                        assert(messageType === "command");
-                        assert(_.isEqual(data, {name: "showScenes", value: validSceneList}));
+                        assert(messageType === CommandKeys.DIRECT_CLIENTS.COMMAND);
+                        assert(_.isEqual(data, {name: CommandKeys.SHOW_SCENES_COMMAND_NAME, value: validSceneList}));
                         didPublishToSocketRoom = true;
                     }
                 }
@@ -150,9 +151,9 @@ describe('command-api-controller', function() {
         };
         var mockMediaHubConnection = {
             emit: function (messageType, rId, cName, cValue, callback) {
-                assert(messageType === "sendCommand");
+                assert(messageType === CommandKeys.HUB.SEND_COMMAND);
                 assert(rId === roomId);
-                assert(cName === "showScenes");
+                assert(cName === CommandKeys.SHOW_SCENES_COMMAND_NAME);
                 assert(_.isEqual(cValue, validSceneList));
                 didUseMediaHubConnection = true;
             }

@@ -1,11 +1,23 @@
 "use strict";
 
-var _ = require('lodash');
+const _ = require('lodash');
 
-let PLAY_SCENE_THEME_COMMAND_NAME = "playSceneAndThemes";
-let SHOW_SCENES_COMMAND_NAME = "showScenes";
+const COMMAND_KEYS = {
+    HUB: {
+        SEND_COMMAND: 'sendCommand'
+    },
+    DIRECT_CLIENTS: {
+        COMMAND: 'command'
+    },
+    PLAY_SCENE_THEME_COMMAND_NAME: "playSceneAndThemes",
+    SHOW_SCENES_COMMAND_NAME: "showScenes"
+};
 
 class CommandAPIController {
+
+    static getCommandKeys() {
+        return COMMAND_KEYS;
+    }
 
     constructor(mediaHubConnection, io) {
         console.log("CommandAPIController - constructor");
@@ -15,44 +27,44 @@ class CommandAPIController {
 
     sendCommand(roomId, commandName, commandValue) {
         // APEP ensure we publish this for any legacy clients still connecting directly to the media hub
-        this.mediaHubConnection.emit('sendCommand', roomId, commandName, commandValue);
+        this.mediaHubConnection.emit(COMMAND_KEYS.HUB.SEND_COMMAND, roomId, commandName, commandValue);
 
         // APEP publish for any clients connected directly to controller
-        this.io.to(roomId).emit('command', {name: commandName, value: commandValue});
+        this.io.to(roomId).emit(COMMAND_KEYS.DIRECT_CLIENTS.COMMAND, {name: commandName, value: commandValue});
     }
 
     playSceneAndThemes(roomId, sceneAndThemesHolder, callback) {
-        if(!this._isValidSceneAndThemeHolder(sceneAndThemesHolder)) {
-            if(callback) {
+        if (!this._isValidSceneAndThemeHolder(sceneAndThemesHolder)) {
+            if (callback) {
                 return callback(new Error("Scene and Themes holder invalid, check documentation"));
             }
         }
 
         // APEP ensure we publish this for any legacy clients still connecting directly to the media hub
-        this.mediaHubConnection.emit('sendCommand', roomId, PLAY_SCENE_THEME_COMMAND_NAME, sceneAndThemesHolder);
+        this.mediaHubConnection.emit(COMMAND_KEYS.HUB.SEND_COMMAND, roomId, COMMAND_KEYS.PLAY_SCENE_THEME_COMMAND_NAME, sceneAndThemesHolder);
 
         // APEP publish for any clients connected directly to controller
-        this.io.to(roomId).emit('command', {name: PLAY_SCENE_THEME_COMMAND_NAME, value: sceneAndThemesHolder});
+        this.io.to(roomId).emit(COMMAND_KEYS.DIRECT_CLIENTS.COMMAND, {name: COMMAND_KEYS.PLAY_SCENE_THEME_COMMAND_NAME, value: sceneAndThemesHolder});
 
-        if(callback) {
+        if (callback) {
             callback();
         }
     }
 
     showScenes(roomId, sceneList, callback) {
-        if(!this._isValidSceneList(sceneList)) {
-            if(callback) {
+        if (!this._isValidSceneList(sceneList)) {
+            if (callback) {
                 return callback(new Error("SceneList invalid, check documentation"));
             }
         }
 
         // APEP ensure we publish this for any legacy clients still connecting directly to the media hub
-        this.mediaHubConnection.emit('sendCommand', roomId, SHOW_SCENES_COMMAND_NAME, sceneList);
+        this.mediaHubConnection.emit(COMMAND_KEYS.HUB.SEND_COMMAND, roomId, COMMAND_KEYS.SHOW_SCENES_COMMAND_NAME, sceneList);
 
         // APEP publish for any clients connected directly to controller
-        this.io.to(roomId).emit('command', {name: SHOW_SCENES_COMMAND_NAME, value: sceneList});
+        this.io.to(roomId).emit(COMMAND_KEYS.DIRECT_CLIENTS.COMMAND, {name: COMMAND_KEYS.SHOW_SCENES_COMMAND_NAME, value: sceneList});
 
-        if(callback) {
+        if (callback) {
             callback();
         }
     }
