@@ -10,7 +10,9 @@ const COMMAND_KEYS = {
         COMMAND: 'command'
     },
     PLAY_SCENE_THEME_COMMAND_NAME: "playSceneAndThemes",
-    SHOW_SCENES_COMMAND_NAME: "showScenes"
+    SHOW_SCENES_COMMAND_NAME: "showScenes",
+
+    PLAYBACK_SCENE_AUDIO_SCALE: "sceneAudioScale"
 };
 
 class CommandAPIController {
