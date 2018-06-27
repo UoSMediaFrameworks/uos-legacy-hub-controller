@@ -10,9 +10,14 @@ const COMMAND_KEYS = {
         COMMAND: 'command'
     },
     PLAY_SCENE_THEME_COMMAND_NAME: "playSceneAndThemes",
+
+    PLAY_SCENE_THEME_SINGULAR_COMMAND_NAME: "playSceneOptThemeAndVolume",
+    STOP_PLAY_SCENE_THEME_SINGULAR_COMMAND_NAME: "stopSceneOptThemeAndVolume",
+
     SHOW_SCENES_COMMAND_NAME: "showScenes",
 
     PLAYBACK_SCENE_AUDIO_SCALE: "sceneAudioScale",
+    PLAYBACK_SCENE_AUDIO_STEP: "sceneAudioStep",
 
     PLAYBACK_SCENE_CONFIG_APPLY_BY_NAME: "applyNamedSceneConfig",
     PLAYBACK_SCENE_CONFIG_APPLY: "applySceneConfig",
