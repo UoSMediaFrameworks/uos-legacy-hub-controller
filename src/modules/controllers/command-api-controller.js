@@ -17,6 +17,7 @@ const COMMAND_KEYS = {
     SHOW_SCENES_COMMAND_NAME: "showScenes",
 
     PLAYBACK_SCENE_AUDIO_SCALE: "sceneAudioScale",
+    PLAYBACK_SCENE_AUDIO_SCALE_LIST: "sceneAudioListScale",
     PLAYBACK_SCENE_AUDIO_STEP: "sceneAudioStep",
 
     PLAYBACK_SCENE_CONFIG_APPLY_BY_NAME: "applyNamedSceneConfig",

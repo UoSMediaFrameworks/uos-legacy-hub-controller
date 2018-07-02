@@ -1,6 +1,6 @@
 {
   "name": "uos-legacy-hub-controller",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The first controller for legacy support of the media hub. The media hub is designed to be an internal component and clients should communicate through controllers.  This repository is likely best as a library to support controller development.",
   "main": "index.js",
   "scripts": {
