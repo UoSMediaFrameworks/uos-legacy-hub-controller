@@ -22,6 +22,13 @@ const COMMAND_KEYS = {
 
     PLAYBACK_SCENE_CONFIG_APPLY_BY_NAME: "applyNamedSceneConfig",
     PLAYBACK_SCENE_CONFIG_APPLY: "applySceneConfig",
+
+    PROJECT: {
+        CERAMIC: {
+            PLAY_SCENE_THEME_SINGULAR_COMMAND_NAME: "ceramicPlaySceneOptThemeAndVolume",
+            STOP_PLAY_SCENE_THEME_SINGULAR_COMMAND_NAME: "ceramicStopSceneOptThemeAndVolume",
+        }
+    }
 };
 
 class CommandAPIController {
