@@ -23,6 +23,14 @@ const COMMAND_KEYS = {
     PLAYBACK_SCENE_CONFIG_APPLY_BY_NAME: "applyNamedSceneConfig",
     PLAYBACK_SCENE_CONFIG_APPLY: "applySceneConfig",
 
+    PLAYBACK_MEDIA_ENGINE_REFRESH: "mediaEngineRefresh",
+
+    PLAYBACK_NODE_CONTENT_SHOW: "nodeContentShow",
+    PLAYBACK_NODE_CONTENT_STOP: "nodeContentStop",
+    PLAYBACK_NODE_CONTENT_REPLACE: "nodeContentReplace",
+    PLAYBACK_REGION_AUDIO_SCALE: "regionAudioScale",
+    PLAYBACK_PLAYER_REGIONS_CONFIG_SET: "playerRegionsConfigSet",
+
     PROJECT: {
         CERAMIC: {
             PLAY_SCENE_THEME_SINGULAR_COMMAND_NAME: "ceramicPlaySceneOptThemeAndVolume",
