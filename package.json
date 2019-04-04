@@ -1,6 +1,6 @@
 {
   "name": "uos-legacy-hub-controller",
-  "version": "0.2.0",
+  "version": "0.3.0rc1",
   "description": "The first controller for legacy support of the media hub. The media hub is designed to be an internal component and clients should communicate through controllers.  This repository is likely best as a library to support controller development.",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/UoSMediaFrameworks/uos-legacy-hub-controller.git"
   },
   "engines": {
-    "node": "6.3.x"
+    "node": "8.15.x"
   },
   "author": "",
   "license": "MIT",
@@ -29,7 +29,7 @@
     "lodash": "^2.4.1",
     "mocha": "^3.5.0",
     "moment": "^2.18.1",
-    "socket.io": "^1.1.0",
+    "socket.io": "^1.7.4",
     "socket.io-client": "^1.2.0"
   }
 }
