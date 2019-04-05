@@ -4,6 +4,7 @@ var http = require('http');
 var SocketIO = require('socket.io');
 var httpShutdown = require('http-shutdown');
 let WebSocketServer = require('websocket').server;
+let hat = require('hat');
 
 var MediaHubConnection = require('./modules/media-hub-connection');
 
@@ -22,7 +23,6 @@ class LegacyHubControllerNativeWebsockets {
         this.authGracePeriod = config.authGracePeriod || 10000;
 
         this.connections = new Map(); // <int id>, <connection>
-        this.connectionIdCounter = 10;
 
         this.wsServer = new WebSocketServer({
             httpServer: this.server
@@ -48,7 +48,7 @@ class LegacyHubControllerNativeWebsockets {
 
         let connection = request.accept(null, request.origin);
 
-        connection.id = this.connectionIdCounter++;
+        connection.id = hat();
         this.connections.set(connection.id, connection);
 
         var disconnectTimer = setTimeout(function() {
