@@ -22,7 +22,7 @@ class LegacyHubControllerNativeWebsockets {
         this.authGracePeriod = config.authGracePeriod || 10000;
 
         this.connections = new Map(); // <int id>, <connection>
-        this.connectionIdCounter = 0;
+        this.connectionIdCounter = 10;
 
         this.wsServer = new WebSocketServer({
             httpServer: this.server
