@@ -28,7 +28,7 @@ const COMMAND_KEYS = {
     PLAYBACK_NODE_CONTENT_SHOW: "nodeContentShow",
     PLAYBACK_NODE_CONTENT_STOP: "nodeContentStop",
     PLAYBACK_NODE_CONTENT_REPLACE: "nodeContentReplace",
-    PLAYBACK_REGION_AUDIO_SCALE: "regionAudioScale",
+    PLAYBACK_NODE_CONTENT_AUDIO_SCALE: "nodeContentAudioScale",
     PLAYBACK_PLAYER_REGIONS_CONFIG_SET: "playerRegionsConfigSet",
 
     PROJECT: {
